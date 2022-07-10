@@ -6,8 +6,10 @@ function UserDet() {
 	const navigate = useNavigate()
 	const handleDelete = async () => {
 		try {
-			await axios.delete("http://localhost:3001/user/" + user._id)
-			navigate("/")
+			if (window.confirm("Delete the item?")) {
+				await axios.delete("http://localhost:3001/user/" + user._id)
+				navigate("/")
+			}
 		} catch (err) {
 			console.log(err.message)
 		}
@@ -18,7 +20,8 @@ function UserDet() {
 	const location = useLocation()
 	const user = location.state
 	return (
-		<div>
+		<div style={{ margin: "1rem" }}>
+			<h2>User Details</h2>
 			<div>
 				<p> Name : {user.name}</p>
 			</div>
@@ -29,9 +32,13 @@ function UserDet() {
 				<p> phone : {user.mobile}</p>
 			</div>
 
-			<div>
-				<button onClick={handleUpdate}>update</button>
-				<button onClick={handleDelete}>delete</button>
+			<div style={{ padding: "1rem" }}>
+				<button style={{ margin: "10px" }} onClick={handleUpdate}>
+					update
+				</button>
+				<button style={{ margin: "10px" }} onClick={handleDelete}>
+					delete
+				</button>
 			</div>
 		</div>
 	)

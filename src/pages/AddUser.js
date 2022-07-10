@@ -1,7 +1,9 @@
 import axios from "axios"
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 function AddUser() {
+	const navigate = useNavigate()
 	const [user, setUser] = useState({
 		name: "",
 		email: "",
@@ -20,16 +22,31 @@ function AddUser() {
 
 	const handleSubmit = async () => {
 		try {
-			const res = await axios.post("http://localhost:3001/user", user)
-			console.log(res)
+			if (user.name === "" || user.email === "" || user.mobile === 0) {
+				alert("Please fill all the fields")
+			} else if (user.mobile.length !== 10) {
+				alert("Please enter valid mobile number")
+			} else if (
+				user.email.indexOf("@") === -1 ||
+				user.email.indexOf(".") === -1
+			) {
+				alert("Please enter valid email")
+			} else if (user.name.length < 2) {
+				alert("Name should be atleast 2 characters")
+			} else {
+				await axios.post("http://localhost:3001/user", user)
+				alert("User added successfully")
+				navigate("/")
+			}
 		} catch (err) {
 			console.log(err.message)
 		}
 	}
 
 	return (
-		<div>
-			<div>
+		<div style={{ margin: "1rem" }}>
+			<h2>Add User</h2>
+			<div style={{ margin: "1rem" }}>
 				<label>
 					Name:
 					<input
@@ -41,7 +58,7 @@ function AddUser() {
 					/>
 				</label>
 			</div>
-			<div>
+			<div style={{ margin: "1rem" }}>
 				<label>
 					Email:
 					<input
@@ -53,7 +70,7 @@ function AddUser() {
 					/>
 				</label>
 			</div>
-			<div>
+			<div style={{ margin: "1rem" }}>
 				<label>
 					Phone:
 					<input
@@ -65,7 +82,9 @@ function AddUser() {
 					/>
 				</label>
 			</div>
-			<button onClick={handleSubmit}>add user</button>
+			<button style={{ margin: "1rem" }} onClick={handleSubmit}>
+				add user
+			</button>
 		</div>
 	)
 }

@@ -9,7 +9,6 @@ function Landing() {
 		;(async () => {
 			try {
 				const { data } = await axios.get("http://localhost:3001/user")
-				console.log(data)
 				setUsers(data)
 			} catch (err) {
 				console.log(err.message)
@@ -26,24 +25,34 @@ function Landing() {
 	}
 
 	return (
-		<div>
-			<h3>Users</h3>
-			{users.map((user) => {
+		<div style={{ margin: "1rem" }}>
+			<h2>Users</h2>
+			{users.map((user, i) => {
 				return (
 					<div
 						key={user._id}
 						onClick={() => {
 							handleClick(user)
 						}}
+						style={{ cursor: "pointer" }}
 					>
 						{" "}
-						<p>{user.name}</p>{" "}
+						<p>
+							{i + 1} :{" "}
+							<span
+								style={{
+									fontSize: "26px",
+								}}
+							>
+								{user.name}
+							</span>
+						</p>{" "}
 					</div>
 				)
 			})}
 
-			<div>
-				<button onClick={handleAddUser}>Add User</button>
+			<div style={{ margin: "2rem" }}>
+				<button onClick={handleAddUser}>Add new User</button>
 			</div>
 		</div>
 	)
